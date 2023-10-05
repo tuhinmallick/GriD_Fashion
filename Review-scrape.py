@@ -27,13 +27,7 @@ page=soup.findAll("a", {"class": "_2Xp0TH"})
 page
 
 
-# In[17]:
-
-
-#Getting links for all pages. Each page has 40 items
-page_links=[]
-for p in page:
-    page_links.append(p.get('href'))
+page_links = [p.get('href') for p in page]
 page_links=['http://flipkart.com'+p for p in page_links ]
 
 
@@ -47,9 +41,7 @@ for p in page_links:
     x= requests.get(url)
     soup= bs(x.content, "html.parser")
     links=soup.findAll("a", {"class": "_3dqZjq"})
-    for link in links:
-        linkss.append('http://flipkart.com'+link.get('href'))
-        
+    linkss.extend('http://flipkart.com'+link.get('href') for link in links)
 len(linkss)
 
 
@@ -92,33 +84,31 @@ for i in range(len(shirts)):
         url=shirts[i]
         x= requests.get(url)
         soup= bs(x.content, "html.parser")
-        
+
         brand=soup.findAll("span", {"class": "_2J4LW6"})[0].text
-        
+
         item=soup.findAll("span", {"class": "_35KyD6"})[0].text
-        
+
         disc_price=soup.findAll("div", {"class": "_1vC4OE _3qQ9m1"})[0].text
-        
+
         mrp=soup.findAll("div", {"class": "_3auQ3N _1POkHg"})[0].text
-        
+
         star=soup.findAll("div", {"class": "hGSR34 bqXGTW"})[0].text
-        
-        rating_number=soup.findAll("span", {"class": "_38sUEc"})[0].text    
-        ratings_num=(rating_number[0:rating_number.find('ratings')-1])
-        
+
+        rating_number=soup.findAll("span", {"class": "_38sUEc"})[0].text
+        ratings_num = rating_number[:rating_number.find('ratings')-1]
+
         reviews_num=rating_number[rating_number.find('and')+4:rating_number.find('reviews')-1]
-        
+
         review=[]
         x=soup.findAll("div", {"class": "_2t8wE0"})
         for i in range(len(x)):
             review.append(x[i].text)
-        
-        
+
+
         feat=soup.findAll("div", {"class": "col col-3-12 _1kyh2f"})
         feat_ans=soup.findAll("div", {"class": "col col-9-12 _1BMpvA"})
-        features={}
-        for x in range(len(feat)):
-            features[feat[x].text]=feat_ans[x].text
+        features = {feat[x].text: feat_ans[x].text for x in range(len(feat))}
         urls.append(url)
         brands.append(brand)
         item_names.append(item)
@@ -134,16 +124,16 @@ for i in range(len(shirts)):
         fabric_.append(features['Fabric'])
         #neck_.append(features['Neck Type'])
         pattern_.append(features['Pattern'])
-        #brand_fit_.append(features['Brand Fit'])
-        #brand_color_.append(features['Brand Color'])
+            #brand_fit_.append(features['Brand Fit'])
+            #brand_color_.append(features['Brand Color'])
     except:
-        print("Incomplete details for item"+str(i)+url)
-    
-    
-        
-        
-    
-    
+        print(f"Incomplete details for item{str(i)}" + url)
+            
+            
+                
+                
+            
+            
 
 
 # In[21]:
