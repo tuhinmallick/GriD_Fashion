@@ -99,15 +99,15 @@ for step in range(iterations):
     random_latent_vectors = np.random.normal(size=(batch_size, latent_dim))
     misleading_targets = np.zeros((batch_size, 1))
     a_loss = gan.train_on_batch(random_latent_vectors, misleading_targets)
-     start += batch_size
+    start += batch_size
     if start > len(x_train) - batch_size:
       start = 0
     if step % 100 == 0:
         gan.save_weights('./output/gan.h5')
-        print('discriminator loss at step %s: %s' % (step, d_loss))
-        print('adversarial loss at step %s: %s' % (step, a_loss))
+        print(f'discriminator loss at step {step}: {d_loss}')
+        print(f'adversarial loss at step {step}: {a_loss}')
         img = image.array_to_img(generated_images[0] * 255., scale=False)
-        img.save(os.path.join(save_dir, 'generated_skirt' + str(step) + '.png'))
+        img.save(os.path.join(save_dir, f'generated_skirt{str(step)}.png'))
         img = image.array_to_img(real_images[0] * 255., scale=False)
-        img.save(os.path.join(save_dir, 'real_skirt' + str(step) + '.png'))
+        img.save(os.path.join(save_dir, f'real_skirt{str(step)}.png'))
 

@@ -35,7 +35,7 @@ def dream(image, model, iterations, lr):
     """ Updates the image to maximize outputs for n iterations """
     Tensor = torch.cuda.FloatTensor if torch.cuda.is_available else torch.FloatTensor
     image = Variable(Tensor(image), requires_grad=True)
-    for i in range(iterations):
+    for _ in range(iterations):
         model.zero_grad()
         out = model(image)
         loss = out.norm()
@@ -54,9 +54,12 @@ def deep_dream(image, model, iterations, lr, octave_scale, num_octaves):
 
     # Extract image representations for each octave
     octaves = [image]
-    for _ in range(num_octaves - 1):
-        octaves.append(nd.zoom(octaves[-1], (1, 1, 1 / octave_scale, 1 / octave_scale), order=1))
-
+    octaves.extend(
+        nd.zoom(
+            octaves[-1], (1, 1, 1 / octave_scale, 1 / octave_scale), order=1
+        )
+        for _ in range(num_octaves - 1)
+    )
     detail = np.zeros_like(octaves[-1])
     for octave, octave_base in enumerate(tqdm.tqdm(octaves[::-1], desc="Dreaming")):
         if octave > 0:

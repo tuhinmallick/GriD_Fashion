@@ -13,7 +13,7 @@ searchterm = 'calvin_klein_dresses'   #how it's written for query 'calvin_klein_
 #searchterm = 'calvin+klein+dresses'   #how it's written for query 'calvin klein dresses'
 
 filename = 'ckdress'  #name of file will start with this
-url = "https://www.google.co.in/search?q="+searchterm+"&source=lnms&tbm=isch"
+url = f"https://www.google.co.in/search?q={searchterm}&source=lnms&tbm=isch"
 
 """
 # Insert path to chromedriver inside parentheses in following line
@@ -39,7 +39,7 @@ for x in browser.find_elements_by_xpath('//img[contains(@class,"rg_i Q4LuWd")]')
     print("URL:", x.get_attribute('src'))
 
     img = x.get_attribute('src')
-    new_filename = "image"+str(counter)+".jpg"
+    new_filename = f"image{str(counter)}.jpg"
 
     try:
         path = r'C:\Users\name\folder_that_exists'+'\\' + filename
